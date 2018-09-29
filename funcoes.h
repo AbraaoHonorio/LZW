@@ -15,7 +15,9 @@ public:
     void imprimirTudo();
     void imprimiPosicao(unsigned int posicao);
     int verificarExistencia(string palavraDesejada);
+    unsigned int tamBibli();
 
+private:
     unsigned int tamanho;
     vector<string> biblioteca;
 

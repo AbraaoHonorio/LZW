@@ -3,6 +3,8 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <math.h>
+#include <bitset>
 
 #include "funcoes.h"
 
@@ -10,7 +12,6 @@ using namespace std;
 
 int main(int argc, char** argv){
 
-    //Tabela principal
     Tabela *tabela = new Tabela();
     //tabela->inserir("a");
     //cout << tabela->verificarExistencia("ab") << endl;
@@ -35,12 +36,16 @@ int main(int argc, char** argv){
     string aux = "";
 
     ///insero na tabela a biblioteca
-    for(int i = 20; i <= 126; i++ ){
+    /*for(int i = 20; i <= 126; i++ ){
         aux = (char)i;
         tabela->inserir(aux);
     }
 
-    tabela->inserir("\n");
+    tabela->inserir("\n");*/
+    for(int i = 0; i <= 255; i++){
+        aux = (char)i;
+        tabela->inserir(aux);
+    }
 
     ///salvo a entrada em uma variavel
     vector<char> conteudo((istreambuf_iterator<char>(input)), (istreambuf_iterator<char>()));
@@ -49,14 +54,15 @@ int main(int argc, char** argv){
     string letrasAtual = "", proximos = "";
     bool naoTemOsProximos = false;
 
-    string saida = "";
+    string saida = "", posicaoBinario = "";
+    unsigned int quantBitsParaONumero = 0;
 
     ///loop principal
     while( posicao < (int)conteudo.size() )
     {
-        cout << "i: " << posicao << " ";
+        //cout << "i: " << posicao << " ";
         letrasAtual = conteudo.at(posicao);
-        cout << "letra: " << letrasAtual << endl;
+        //cout << "letra: " << letrasAtual << endl;
 
         ///procuro, se tenho a letra atual, mais o proximo
         naoTemOsProximos = false;
@@ -67,6 +73,8 @@ int main(int argc, char** argv){
 
                 posicaoProximo = posicao + 1;
                 proximos = letrasAtual + conteudo.at(posicaoProximo);
+
+                //cout << "procurando: " << proximos << endl;
 
                 if ( tabela->verificarExistencia(proximos) != -1){
 
@@ -81,24 +89,78 @@ int main(int argc, char** argv){
             }
         }
 
-        cout << "palavra a procurar: " << letrasAtual;
+        //cout << "palavra a procurar: " << letrasAtual << endl;
 
         posicaoNaTabela = tabela->verificarExistencia(letrasAtual);
-        saida += to_string(posicaoNaTabela);
+        quantBitsParaONumero = 1 + trunc(log2(tabela->tamBibli()-1));
 
-        cout << " salvou com o cod: " << posicaoNaTabela << endl;
+        posicaoBinario = bitset<64>(posicaoNaTabela).to_string();
+
+        posicaoBinario = posicaoBinario.substr(64-quantBitsParaONumero);
+
+        //cout << "posicaoNaTabela: " << posicaoNaTabela;
+        //cout << "\nquantBitsParaONumero: " << quantBitsParaONumero;
+        //cout << "\nposicaoBinario: " << posicaoBinario << endl;
+
+        saida += posicaoBinario;
+
 
         if( (posicao + 1) < (int)conteudo.size() ){
             proximos = letrasAtual + conteudo.at(posicaoProximo);
             tabela->inserir(proximos);
-            cout << "inserindo: " << proximos << endl;
+            //cout << "inserindo: " << proximos << endl;
         }
 
         ///e verifico a aucasiao especial
         posicao++;
     }
 
-    cout << "resultado: " << saida << endl;
+    cout << saida << endl;
+
+    ofstream fileCodificado;
+    fileCodificado.open("codificado.teoria", std::ios::binary);
+    string auxVar, test;
+    int intVar, is = 0;
+    char charVar;
+
+    for(is = 0; is < (saida.size() - 8); is += 8){
+
+        auxVar = saida.substr(is,8);
+        intVar = stoi(auxVar,nullptr,2);
+        charVar = intVar;
+        fileCodificado << charVar;
+
+    }
+
+    int bitsQueSobra = ( (trunc(saida.size() / 8)) * 8) - (saida.size() % 8);
+
+    if( bitsQueSobra != ( (trunc(saida.size() / 8)) * 8) ){
+
+        string auxSobra = "";
+        int diferenca = ( (trunc(saida.size() / 8)) * 8) - bitsQueSobra;
+
+        for(int i = 0; i < (8 - diferenca); i++)
+            auxSobra += "0";
+
+        auxSobra += saida.substr((trunc(saida.size() / 8)) * 8);
+
+        intVar = stoi(auxSobra,nullptr,2);
+        charVar = intVar;
+
+        fileCodificado << charVar;
+
+    }
+    else{
+        auxVar = saida.substr(saida.size()-8);
+        intVar = stoi(auxVar,nullptr,2);
+        charVar = intVar;
+        fileCodificado << charVar;
+    }
+    //0's 48 -> 53
+
+    cout << "Arquivo Codificado!!!" << endl;
+
+    fileCodificado.close();
 
     return 0;
 

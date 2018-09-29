@@ -52,3 +52,7 @@ int Tabela::verificarExistencia(string palavraDesejada){
     return posicao;
 
 }
+
+unsigned int Tabela::tamBibli(){
+    return this->tamanho;
+}
