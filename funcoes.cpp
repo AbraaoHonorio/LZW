@@ -56,3 +56,14 @@ int Tabela::verificarExistencia(string palavraDesejada){
 unsigned int Tabela::tamBibli(){
     return this->tamanho;
 }
+
+bool Tabela::retornarPalavra(int posicao, string *saida){
+
+    if(posicao < this->tamanho){
+        *saida = this->biblioteca.at(posicao);
+        return true;
+    }else{
+        return false;
+    }
+
+}

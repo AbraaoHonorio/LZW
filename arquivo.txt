@@ -1,0 +1,6 @@
+Nosso comparativo em games com os processadores topo de linha demorou um pouco para ser produzido, mas isso acabou trazendo outra comparação muito interessante: uma atualização dos drivers da Nvidia trouxe entre suas correções uma justamente para melhorar o desempenho de CPUs com 32 núcleos (configuração do 2990WX) em jogos, e os resultados são realmente interessantes.
+
+O driver otimiza o uso do Threadripper 2990WX usando de forma mais eficiente esse processador. A parte mais importante do ajuste é dar prioridade ao uso dos 16 núcleos que tem acesso direto às memórias RAM, e por conta disso melhores latências. O resultado é bem semelhante ao que obtivemos quando desabilitávamos metade do 2990WX para ter exatamente esse efeito.
+
+Então agora o 2990WX deve ser a prioridade para os gamers? Apesar do novo driver da Nvidia reduzir bastante os problemas de desempenho desse CPU em jogos, o Ryzen Threadripper 2950X ainda segue como a opção mais indicada para o usuário entusiasta que quer alto desempenho em games e também faz questão de um processador com muitos núcleos e threads.
+

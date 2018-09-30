@@ -16,6 +16,7 @@ public:
     void imprimiPosicao(unsigned int posicao);
     int verificarExistencia(string palavraDesejada);
     unsigned int tamBibli();
+    bool retornarPalavra(int posicao,string* saida);
 
 private:
     unsigned int tamanho;
